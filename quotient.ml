@@ -37,6 +37,7 @@ end
         val ( * ) : t -> t -> t
         val (/) : t -> t -> t
         val to_s : t -> string * string
+        val pp_print : Format.formatter -> t -> unit
 end = struct
         type t = R.t * R.t
 
@@ -58,6 +59,7 @@ end = struct
         let  ( * )  (x1,x2) (y1, y2) = simplify (R.( * ) x1 x2, R.( * ) y1 y2)
         let  (/)  (x1,x2) (y1, y2) =simplify( ( * ) (x1,x2) (y2,y1))
         let to_s (x,y) =  (R.to_s x , R.to_s y) 
+        let pp_print f x = Format.pp_print_string f ((R.to_s (fst x) ) ^ "/" ^ (R.to_s (snd x)))
 
 end;;
 
@@ -94,3 +96,5 @@ module Bigint = struct
         let to_s = Big_int.string_of_big_int 
 end;;
 
+module N = Quotient2(Bigint);;
+#install_printer N.pp_print;;
