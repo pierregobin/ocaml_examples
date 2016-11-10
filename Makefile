@@ -1,9 +1,10 @@
 
-all : web.out
+EXE = web.native
+all : $(EXE)
 
-web.out : web.ml
-	ocamlfind ocamlc -package netclient,lambdasoup -o web.out web.ml -linkpkg
+web.native : web.ml
+	ocamlbuild -use-ocamlfind -pkgs netclient,lambdasoup $@
 
 clean: 
-	rm -rf *.out *.cmo
+	rm -rf *.out *.cmo *.cmi _build $(EXE)
 
